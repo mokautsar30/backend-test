@@ -4,7 +4,7 @@ const router = require("express").Router();
 
 router.post("/", adminOnly, ProductController.addProduct);
 router.get("/", ProductController.viewProduct);
-router.put("/:id", ProductController.editProduct);
+router.put("/:id", adminOnly, ProductController.editProduct);
 router.delete("/:id", ProductController.deleteProduct);
 
 module.exports = router;
