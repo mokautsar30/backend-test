@@ -14,9 +14,10 @@ class ProductController {
     }
     static async viewProduct(req, res) {
         try {
-            res.send("postview")
+            const data = await Product.findAll()
+            res.status(200).json(data)
         } catch (error) {
-            res.send(error)
+            console.log(error)
         }
     }
     static async editProduct(req, res) {
