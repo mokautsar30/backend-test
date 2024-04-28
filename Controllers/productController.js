@@ -1,10 +1,15 @@
-
+const {Product, User} = require("../models")
 class ProductController {
     static async addProduct(req, res) {
         try {
-            res.send("postAdd")
+            const product = req.body;
+            product.userId = req.user.id
+            const data = await Product.create(product);
+            // console.log(product);
+            res.status(201).json(data)
         } catch (error) {
-            res.send(error)
+            console.log(error);
+            res.status(403).json({message: "Forbidden Access", error: error.message})
         }
     }
     static async viewProduct(req, res) {
