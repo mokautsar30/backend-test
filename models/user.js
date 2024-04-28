@@ -1,58 +1,59 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     static associate(models) {
       User.hasMany(models.Product, {
-        foreignKey: 'userId'
-      })
+        foreignKey: "userId",
+      });
     }
   }
-  User.init({
-    username: DataTypes.STRING,
-    email: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      unique: {
-        args: true,
-        msg: "This email is already exist",
-      },
-      validate: {
-        notNull: {
-          msg: "Email is required"
-        },
-        notEmpty: {
-          msg: "Email is required"
-        },
-        isEmail: {
+  User.init(
+    {
+      username: DataTypes.STRING,
+      email: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: {
           args: true,
-          msg: "Email format must be an Email"
-        }
-      }
-    },
-    role: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      defaultValue: "Staff"
-    },
-    password: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notNull: {
-          msg: "Password is required"
+          msg: "This email is already exist",
         },
-        notEmpty: {
-          msg: "Password is required"
+        validate: {
+          notNull: {
+            msg: "Email is required",
+          },
+          notEmpty: {
+            msg: "Email is required",
+          },
+          isEmail: {
+            args: true,
+            msg: "Email format must be an Email",
+          },
         },
-        len: [6]
-      }
+      },
+      role: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        defaultValue: "Staff",
+      },
+      password: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notNull: {
+            msg: "Password is required",
+          },
+          notEmpty: {
+            msg: "Password is required",
+          },
+          len: [6],
+        },
+      },
     },
-  }, {
-    sequelize,
-    modelName: 'User',
-  });
+    {
+      sequelize,
+      modelName: "User",
+    }
+  );
   return User;
 };
