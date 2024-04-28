@@ -5,6 +5,6 @@ const router = require("express").Router();
 router.post("/", adminOnly, ProductController.addProduct);
 router.get("/", ProductController.viewProduct);
 router.put("/:id", adminOnly, ProductController.editProduct);
-router.delete("/:id", ProductController.deleteProduct);
+router.delete("/:id", adminOnly, ProductController.deleteProduct);
 
 module.exports = router;
