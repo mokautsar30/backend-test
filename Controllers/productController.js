@@ -1,20 +1,17 @@
 const { Product, User, sequelize } = require("../models");
 const { Op } = require("sequelize");
 class ProductController {
-  static async addProduct(req, res) {
+  static async addProduct(req, res, next) {
     try {
       const product = req.body;
       product.userId = req.user.id;
       const data = await Product.create(product);
       res.status(201).json(data);
     } catch (error) {
-      console.log(error);
-      res
-        .status(403)
-        .json({ message: "Forbidden Access", error: error.message });
+      next(error);
     }
   }
-  static async viewProduct(req, res) {
+  static async viewProduct(req, res, next) {
     try {
       const { search } = req.query;
       const options = {};
@@ -28,10 +25,10 @@ class ProductController {
       const data = await Product.findAll(options);
       res.status(200).json(data);
     } catch (error) {
-      console.log(error);
+      next(error);
     }
   }
-  static async editProduct(req, res) {
+  static async editProduct(req, res, next) {
     try {
       const foundProduct = await Product.findOne({
         where: {
@@ -54,7 +51,7 @@ class ProductController {
         data: updatedProduct,
       });
     } catch (error) {
-      console.log(error);
+      next(error);
     }
   }
   static async deleteProduct(req, res) {
@@ -75,7 +72,7 @@ class ProductController {
         data: product,
       });
     } catch (error) {
-      console.log(error);
+      next(error);
     }
   }
 }
