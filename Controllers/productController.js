@@ -1,11 +1,11 @@
-const { Product, User } = require("../models");
+const { Product, User, sequelize } = require("../models");
+const { Op } = require("sequelize");
 class ProductController {
   static async addProduct(req, res) {
     try {
       const product = req.body;
       product.userId = req.user.id;
       const data = await Product.create(product);
-      // console.log(product);
       res.status(201).json(data);
     } catch (error) {
       console.log(error);
@@ -16,7 +16,16 @@ class ProductController {
   }
   static async viewProduct(req, res) {
     try {
-      const data = await Product.findAll();
+      const { search } = req.query;
+      const options = {};
+      if (search) {
+        options.where = {
+          name: {
+            [Op.iLike]: `%${search}%`,
+          },
+        };
+      }
+      const data = await Product.findAll(options);
       res.status(200).json(data);
     } catch (error) {
       console.log(error);
