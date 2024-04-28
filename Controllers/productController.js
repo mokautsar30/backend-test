@@ -50,9 +50,23 @@ class ProductController {
   }
   static async deleteProduct(req, res) {
     try {
-      res.send("postdelete");
+      const productId = req.params.id;
+      const product = await Product.findOne({
+        where: {
+          id: productId,
+        },
+      });
+      if (!product) {
+        throw { name: "ErrorNotFound" };
+      }
+
+      await product.destroy();
+      res.status(200).json({
+        message: `Success delete product by id ${req.params.id}`,
+        data: product,
+      });
     } catch (error) {
-      res.send(error);
+      console.log(error);
     }
   }
 }
