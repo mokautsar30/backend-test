@@ -1,5 +1,7 @@
 const { Product, User, sequelize } = require("../models");
 const { Op } = require("sequelize");
+
+
 class ProductController {
   static async addProduct(req, res, next) {
     try {
