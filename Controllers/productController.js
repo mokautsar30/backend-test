@@ -82,7 +82,7 @@ class ProductController {
       next(error);
     }
   }
-  static async deleteProduct(req, res,next) {
+  static async deleteProduct(req, res, next) {
     try {
       const productId = req.params.id;
       const product = await Product.findOne({
