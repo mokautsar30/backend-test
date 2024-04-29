@@ -17,6 +17,17 @@ module.exports = function errorHandler(error, req, res, next) {
       message = "Password is required";
       break;
 
+    case "ExistingEmail":
+      statusCode = 400;
+      message = "email already exist";
+      break;
+
+    case "UserNotExist":
+    case "PasswordInvalid":
+      statusCode = 401;
+      message = "Invalid email / password";
+      break;
+
     case "SequelizeValidationError":
     case "SequelizeUniqueConstraintError":
       statusCode = 400;
