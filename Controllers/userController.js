@@ -1,3 +1,4 @@
+const { Op } = require("sequelize");
 const { comparePassword } = require("../helpers/bcrypt");
 const { signToken } = require("../helpers/jwt");
 const { User } = require("../models");
@@ -5,10 +6,10 @@ const { User } = require("../models");
 class UserController {
   static async login(req, res, next) {
     try {
-      const { username, password } = req.body;
+      const { email, password } = req.body;
 
-      if (!username) {
-        throw { name: "UsernameIsRequired" };
+      if (!email) {
+        throw { name: "EmailIsRequired" };
       }
 
       if (!password) {
@@ -16,7 +17,7 @@ class UserController {
       }
 
       const user = await User.findOne({
-        where: { username },
+        where: { email },
       });
 
       if (!user) {
@@ -41,6 +42,18 @@ class UserController {
     try {
       const { username, email, role, password } = req.body;
 
+      const existEmail = await User.findOne({
+        where: {
+          email: {
+            [Op.iLike]: email,
+          },
+        },
+      });
+
+      if (existEmail) {
+        return res.status(400).json({ error: "email already exist" });
+      }
+
       const user = await User.create({
         username,
         email,
@@ -50,7 +63,7 @@ class UserController {
 
       res.status(201).json({
         id: user.id,
-        username: user.username,
+        email: user.email,
       });
     } catch (error) {
       next(error);
