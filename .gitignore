@@ -1,6 +1,6 @@
 node_modules
 .env
 
-# Ignore test-related files
-/coverage.data
-/coverage/
+cover/
+.coverage
+coverage.xml
