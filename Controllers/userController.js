@@ -42,6 +42,14 @@ class UserController {
     try {
       const { username, email, role, password } = req.body;
 
+      if (!password) {
+        throw { name: "PasswordIsRequired" };
+      }
+
+      if (!username) {
+        throw { name: "UsernameIsRequired" };
+      }
+
       const existEmail = await User.findOne({
         where: {
           email: {
@@ -51,7 +59,7 @@ class UserController {
       });
 
       if (existEmail) {
-        return res.status(400).json({ error: "email already exist" });
+        throw { name: "ExistingEmail" };
       }
 
       const user = await User.create({
