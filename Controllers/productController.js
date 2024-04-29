@@ -5,6 +5,19 @@ class ProductController {
     try {
       const product = req.body;
       product.userId = req.user.id;
+
+      //check product with the sama name
+      const existProduct = await Product.findOne({
+        where: {
+          name: {
+            [Op.iLike]: product.name
+          }
+        }
+      });
+      if(existProduct) {
+        return res.status(400).json({error: "Product with this name already exist"})
+      }
+
       const data = await Product.create(product);
       res.status(201).json(data);
     } catch (error) {
